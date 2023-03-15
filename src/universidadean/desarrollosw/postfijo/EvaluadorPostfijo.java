@@ -28,59 +28,9 @@ public class EvaluadorPostfijo {
      * Realiza la evaluación de la expresión postfijo utilizando una pila
      * @param expresion una lista de elementos con números u operadores
      * @return el resultado de la evaluación de la expresión.
+     */
 
-    static int evaluarPostFija(List<String> expresion) {
-        Stack<Integer> pila = new Stack<>();
-        //Recorremos la lista que traemos desde la expresion
-        for (String elemento : expresion){
-            if(elemento.matches("\\d+")){
-                pila.push(Integer.parseInt(elemento));
-            }else{
-                int number2 = pila.pop();
-                int number1 = pila.pop();
-
-                switch (elemento){
-                    case "+":
-                        pila.push(number1+number2);
-                        break;
-                    case "-":
-                        pila.push(number1 - number2);
-                        break;
-                    case "*":
-                        pila.push(number1 * number2);
-                        break;
-                    case "/":
-                        pila.push(number1 / number2);
-                        break;
-                    case "^":
-                        pila.push((int) Math.pow(number1, number2));
-                        break;
-                }
-            }
-        }
-
-        return pila.pop();
-    }
-
-    /**
-     * Programa principal
-
-    public static void main(String[] args) {
-        Scanner teclado = new Scanner(System.in);
-        List<String> expresion = List.of("5", "2", "^", "4", "*", "3", "-");
-        //System.out.print("> ");
-        //String linea = teclado.nextLine();
-        try {
-            int resultado = evaluarPostFija(expresion);
-            System.out.println(resultado);
-        }
-        catch (Exception e) {
-            System.err.printf("Error grave en la expresión: %s", e.getMessage());
-        }
-
-    }*/
-
-    public static int evaluarExpresionPostfijo(List<String> expresion) {
+    public static int evaluarPostFija(List<String> expresion) {
         Stack<Integer> pila = new Stack<Integer>();
         for (String elemento : expresion) {
             //Validamos la expresion regular
@@ -113,9 +63,22 @@ public class EvaluadorPostfijo {
     }
 
     public static void main(String[] args) {
-        List<String> expresion = List.of("(", "5", "2", "^", "4", "*", "3", "-");
-        int resultado = evaluarExpresionPostfijo(expresion);
-        System.out.println("El resultado es: " + resultado);
+       // List<String> expresion = List.of("(", "5", "2", "^", "4", "*", "3", "-")
+        List<String> expresion = List.of( "1", "1", "+");
+        Scanner teclado = new Scanner(System.in);
+
+        System.out.print("> ");
+        String linea = teclado.nextLine();
+
+        try {
+           // List<String> expresion = Token.dividir(linea);
+            System.out.println(expresion);
+            System.out.println(evaluarPostFija(expresion));
+        }
+        catch (Exception e) {
+            System.err.printf("Error grave en la expresión: %s", e.getMessage());
+        }
+
     }
 
 }
