@@ -23,36 +23,37 @@ import java.util.Stack;
  * postfija. Por ejemplo: 4 5 +
  */
 public class EvaluadorPostfijo {
+
     /**
      * Realiza la evaluación de la expresión postfijo utilizando una pila
      * @param expresion una lista de elementos con números u operadores
      * @return el resultado de la evaluación de la expresión.
-     */
-    static double evaluarPostFija(String expresion) {
 
-        Stack<Double> pila = new Stack<>();
+    static int evaluarPostFija(List<String> expresion) {
+        Stack<Integer> pila = new Stack<>();
+        //Recorremos la lista que traemos desde la expresion
+        for (String elemento : expresion){
+            if(elemento.matches("\\d+")){
+                pila.push(Integer.parseInt(elemento));
+            }else{
+                int number2 = pila.pop();
+                int number1 = pila.pop();
 
-        for (int i = 0; i < expresion.length(); i++) {
-            char caracter = expresion.charAt(i);
-
-            if (Character.isDigit(caracter)) {
-                pila.push(Double.parseDouble(String.valueOf(caracter)));
-            } else {
-                double operando2 = pila.pop();
-                double operando1 = pila.pop();
-
-                switch (caracter) {
-                    case '+':
-                        pila.push(operando1 + operando2);
+                switch (elemento){
+                    case "+":
+                        pila.push(number1+number2);
                         break;
-                    case '-':
-                        pila.push(operando1 - operando2);
+                    case "-":
+                        pila.push(number1 - number2);
                         break;
-                    case '*':
-                        pila.push(operando1 * operando2);
+                    case "*":
+                        pila.push(number1 * number2);
                         break;
-                    case '/':
-                        pila.push(operando1 / operando2);
+                    case "/":
+                        pila.push(number1 / number2);
+                        break;
+                    case "^":
+                        pila.push((int) Math.pow(number1, number2));
                         break;
                 }
             }
@@ -63,13 +64,58 @@ public class EvaluadorPostfijo {
 
     /**
      * Programa principal
-     */
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese la expresión postfija: ");
-        String postfixExpression = scanner.nextLine();
-        double result = evaluarPostFija(postfixExpression);
-        System.out.println("Resultado: " + result);
 
+    public static void main(String[] args) {
+        Scanner teclado = new Scanner(System.in);
+        List<String> expresion = List.of("5", "2", "^", "4", "*", "3", "-");
+        //System.out.print("> ");
+        //String linea = teclado.nextLine();
+        try {
+            int resultado = evaluarPostFija(expresion);
+            System.out.println(resultado);
+        }
+        catch (Exception e) {
+            System.err.printf("Error grave en la expresión: %s", e.getMessage());
+        }
+
+    }*/
+
+    public static int evaluarExpresionPostfijo(List<String> expresion) {
+        Stack<Integer> pila = new Stack<Integer>();
+        for (String elemento : expresion) {
+            //Validamos la expresion regular
+            if (elemento.matches("\\d+")) {
+                //Parseamos el elemento numero
+                pila.push(Integer.parseInt(elemento));
+            } else {
+                int num2 = pila.pop();
+                int num1 = pila.pop();
+                switch (elemento) {
+                    case "+":
+                        pila.push(num1 + num2);
+                        break;
+                    case "-":
+                        pila.push(num1 - num2);
+                        break;
+                    case "*":
+                        pila.push(num1 * num2);
+                        break;
+                    case "/":
+                        pila.push(num1 / num2);
+                        break;
+                    case "^":
+                        pila.push((int) Math.pow(num1, num2));
+                        break;
+                }
+            }
+        }
+        return pila.pop();
     }
+
+    public static void main(String[] args) {
+        List<String> expresion = List.of("(", "5", "2", "^", "4", "*", "3", "-");
+        int resultado = evaluarExpresionPostfijo(expresion);
+        System.out.println("El resultado es: " + resultado);
+    }
+
 }
