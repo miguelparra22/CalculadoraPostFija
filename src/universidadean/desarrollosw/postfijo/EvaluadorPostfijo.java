@@ -13,10 +13,7 @@ package universidadean.desarrollosw.postfijo;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Esta clase representa una clase que evalúa expresiones en notación polaca o
@@ -31,6 +28,7 @@ public class EvaluadorPostfijo {
      */
 
     public static int evaluarPostFija(List<String> expresion) {
+        //Declaramos la Pila
         Stack<Integer> pila = new Stack<Integer>();
         for (String elemento : expresion) {
             //Validamos la expresion regular
@@ -38,8 +36,10 @@ public class EvaluadorPostfijo {
                 //Parseamos el elemento numero
                 pila.push(Integer.parseInt(elemento));
             } else {
+                //Tomamos lo valores que salen de la pila para operarlos entre si.
                 int num2 = pila.pop();
                 int num1 = pila.pop();
+                //Elegimos el caso para la operacion correspondiente
                 switch (elemento) {
                     case "+":
                         pila.push(num1 + num2);
@@ -63,17 +63,19 @@ public class EvaluadorPostfijo {
     }
 
     public static void main(String[] args) {
-       // List<String> expresion = List.of("(", "5", "2", "^", "4", "*", "3", "-")
-        List<String> expresion = List.of( "1", "1", "+");
-        Scanner teclado = new Scanner(System.in);
 
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Por favor ingresa tu notación separada por comas. Ej: 2,3,+,4,*");
         System.out.print("> ");
         String linea = teclado.nextLine();
 
         try {
-           // List<String> expresion = Token.dividir(linea);
-            System.out.println(expresion);
-            System.out.println(evaluarPostFija(expresion));
+            //Dividimos el texto por medio de la coma debido a que queremos convertirlo en una lista.
+           String[] divisionTexto = linea.split(",");
+           //Convertirmos el texto separado por comas en una Lista
+            List<String> lista = new ArrayList<>(Arrays.asList(divisionTexto));
+            //Se llama a la operacion.
+            System.out.println(evaluarPostFija(lista));
         }
         catch (Exception e) {
             System.err.printf("Error grave en la expresión: %s", e.getMessage());
